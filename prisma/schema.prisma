@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING") // สำหรับ Vercel Postgres
+}
+
+// 👤 ตารางผู้ใช้งาน
+model User {
+  id            String   @id @default(uuid())
+  nationalId    String   @unique
+  militaryId    String   @unique
+  rank          String
+  firstName     String
+  lastName      String
+  position      String?
+  affiliation   String?
+  unit          String
+  gender        String?
+  age           String?
+  nationality   String   @default("ไทย")
+  phone         String?
+  email         String   @unique
+  passwordHash  String    // จะถูกเข้ารหัสด้วย bcrypt
+  role          String   @default("Learner") // Admin, Instructor, Learner
+  avatarUrl     String?
+  createdAt     DateTime @default(now())
+
+  quizResults   QuizResult[]
+}
+
+// 📚 ตารางหลักสูตร
+model Course {
+  id          String   @id @default(uuid())
+  courseCode  String   @unique // เช่น RTA-C01
+  name        String
+  description String
+  instructor  String
+  coverImage  String
+  videoUrl    String?  // เผื่อวิชาที่มีแค่วิดีโอเดียว
+  category    String   @default("ทั่วไป")
+  createdAt   DateTime @default(now())
+
+  chapters    Chapter[]
+  questions   QuizQuestion[]
+  results     QuizResult[]
+}
+
+// 🎬 ตารางบทเรียนย่อย (Multi-Chapter)
+model Chapter {
+  id         String @id @default(uuid())
+  title      String
+  videoUrl   String
+  orderIndex Int    @default(0) // ลำดับตอน EP.1, EP.2
+  
+  courseId   String
+  course     Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+// 📝 ตารางข้อสอบ
+model QuizQuestion {
+  id            String @id @default(uuid())
+  question      String
+  optA          String
+  optB          String
+  optC          String
+  optD          String
+  correctAnswer String // A, B, C, หรือ D
+  
+  courseId      String
+  course        Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+// 🏆 ตารางผลการทดสอบและใบประกาศ
+model QuizResult {
+  id             String   @id @default(uuid())
+  score          Int
+  total          Int
+  isPassed       Boolean
+  certificateUrl String?
+  createdAt      DateTime @default(now())
+
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId       String
+  course         Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+// 📢 ตารางประกาศข่าวสาร
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  type      String   @default("Info") // Info หรือ Alert
+  createdAt DateTime @default(now())
+}
+
+// 📁 ตารางคลังความรู้
+model KnowledgeBase {
+  id        String   @id @default(uuid())
+  title     String
+  category  String
+  fileUrl   String
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,8 @@
+﻿src/app/admin/users/page.tsx(84,48): error TS2339: Property 'id' does not exist on type '{ name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined; }'.
+src/app/api/admin/courses/route.ts(4,10): error TS2305: Module '"../../auth/[...nextauth]/route"' has no exported member 'authOptions'.
+src/app/api/admin/quiz/route.ts(4,10): error TS2305: Module '"../../auth/[...nextauth]/route"' has no exported member 'authOptions'.
+src/app/api/admin/stats/route.ts(4,10): error TS2305: Module '"../../auth/[...nextauth]/route"' has no exported member 'authOptions'.
+src/app/api/admin/users/route.ts(4,10): error TS2305: Module '"../../auth/[...nextauth]/route"' has no exported member 'authOptions'.
+src/components/CoursePlayer.tsx(40,34): error TS2339: Property 'id' does not exist on type '{ name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined; }'.
+src/components/Sidebar.tsx(45,169): error TS2339: Property 'role' does not exist on type '{ name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined; }'.
+src/components/Sidebar.tsx(57,27): error TS2339: Property 'role' does not exist on type '{ name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined; }'.
