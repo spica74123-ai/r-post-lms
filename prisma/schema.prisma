@@ -29,7 +29,11 @@ model User {
   avatarUrl     String?
   createdAt     DateTime @default(now())
 
-  quizResults   QuizResult[]
+  quizResults           QuizResult[]
+  videoProgresses       VideoProgress[]
+  assignmentSubmissions AssignmentSubmission[]
+  discussions           Discussion[]
+  auditLogs             AuditLog[]
 }
 
 // 📚 ตารางหลักสูตร
@@ -47,6 +51,8 @@ model Course {
   chapters    Chapter[]
   questions   QuizQuestion[]
   results     QuizResult[]
+  assignments Assignment[]
+  discussions Discussion[]
 }
 
 // 🎬 ตารางบทเรียนย่อย (Multi-Chapter)
@@ -58,6 +64,9 @@ model Chapter {
   
   courseId   String
   course     Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  videoProgresses VideoProgress[]
+  discussions     Discussion[]
 }
 
 // 📝 ตารางข้อสอบ
@@ -105,4 +114,73 @@ model KnowledgeBase {
   category  String
   fileUrl   String
   createdAt DateTime @default(now())
+}
+
+// ---------------------------------------------
+// 🏢 EXTENDED ENTERPRISE MODULES (PHASE 5)
+// ---------------------------------------------
+
+// 📽️ ตารางความคืบหน้าการเรียน (Video Progress)
+model VideoProgress {
+  id         String   @id @default(uuid())
+  isCompleted Boolean @default(false)
+  updatedAt  DateTime @updatedAt
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapterId  String
+  chapter    Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, chapterId])
+}
+
+// 📝 ระบบส่งการบ้าน (Assignments)
+model Assignment {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  dueDate     DateTime?
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  submissions AssignmentSubmission[]
+}
+
+model AssignmentSubmission {
+  id           String   @id @default(uuid())
+  fileUrl      String
+  status       String   @default("Pending") // Pending, Passed, Failed
+  feedback     String?
+  createdAt    DateTime @default(now())
+
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+}
+
+// 💬 กระดานถาม-ตอบ (Q&A Forum)
+model Discussion {
+  id         String   @id @default(uuid())
+  message    String
+  createdAt  DateTime @default(now())
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  chapterId  String?  // ผูกกับตอนเรียนเฉพาะเจาะจงได้
+  chapter    Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+// 🔒 ประวัติการใช้งาน (Audit Logs & Security)
+model AuditLog {
+  id         String   @id @default(uuid())
+  action     String   // เช่น LOGIN, DELETE_COURSE, UPDATE_ROLE
+  details    String   // ข้อมูลเพิ่มเติม
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

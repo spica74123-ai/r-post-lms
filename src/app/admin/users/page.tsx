@@ -43,8 +43,11 @@ export default function AdminUsersPage() {
   return (
     <div className="max-w-6xl mx-auto w-full animate-fade-in">
       <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-6 gap-4 border-b border-gray-200 dark:border-army-700 pb-4">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-          <i className="fa-solid fa-users-gear text-rta-DEFAULT dark:text-rta-accent mr-2"></i> จัดการสิทธิ์กำลังพล
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+          <i className="fa-solid fa-users-gear text-rta-DEFAULT dark:text-rta-accent mr-3"></i> จัดการสิทธิ์กำลังพล
+          <a href="/api/admin/export" className="ml-4 bg-[#f1f4e6] text-rta-DEFAULT hover:bg-rta-DEFAULT hover:text-white dark:bg-army-700 dark:text-rta-accent dark:hover:bg-rta-accent dark:hover:text-army-900 text-[11px] px-3 py-1.5 rounded-lg transition shadow-sm font-bold border border-rta-DEFAULT/20 dark:border-army-600 flex items-center">
+            <i className="fa-solid fa-file-excel mr-1.5"></i> ส่งออกรายงาน CSV
+          </a>
         </h3>
         <div className="relative w-full lg:w-64">
           <i className="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
@@ -53,7 +56,7 @@ export default function AdminUsersPage() {
             placeholder="ค้นหาชื่อ หรือ สังกัด..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full border border-gray-300 dark:border-army-600 rounded-xl py-3 pl-10 pr-4 text-sm bg-white dark:bg-army-800 text-gray-900 dark:text-white outline-none focus:border-rta-DEFAULT transition"
+            className="w-full border border-gray-300 dark:border-army-600 rounded-xl py-3 pl-10 pr-4 text-sm bg-white dark:bg-army-800 text-gray-900 dark:text-white outline-none focus:border-rta-DEFAULT transition shadow-sm"
           />
         </div>
       </div>
@@ -73,8 +76,8 @@ export default function AdminUsersPage() {
               {loading ? (
                 <tr><td colSpan={4} className="text-center p-10"><i className="fa-solid fa-spinner fa-spin text-3xl text-rta-DEFAULT"></i></td></tr>
               ) : (
-                filteredUsers.map(u => (
-                  <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-army-700/50 transition">
+                filteredUsers.map((u, i) => (
+                  <tr key={u.id} className="hover:bg-white dark:hover:bg-army-700/80 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md relative z-0 hover:z-10 bg-transparent animate-fade-in-up" style={{ animationDelay: `${i * 0.05}s` }}>
                     <td className="p-5 font-bold text-gray-900 dark:text-white">{u.rank}{u.firstName} {u.lastName}</td>
                     <td className="p-5 text-gray-600 dark:text-gray-400">{u.unit}</td>
                     <td className="p-5">
@@ -89,9 +92,9 @@ export default function AdminUsersPage() {
                           onChange={(e) => handleRoleChange(u.id, e.target.value)}
                           className="border border-gray-300 dark:border-army-600 rounded-xl p-2 text-xs font-black bg-white dark:bg-army-800 text-gray-900 dark:text-white outline-none cursor-pointer focus:border-rta-DEFAULT transition"
                         >
-                          <option value="Learner">Learner</option>
-                          <option value="Instructor">Instructor</option>
-                          <option value="Admin">Admin</option>
+                          <option value="Learner">ผู้เรียน (Learner)</option>
+                          <option value="Commander">ผู้บังคับหน่วย (Commander)</option>
+                          <option value="Admin">ผู้ดูแลระบบ (Admin)</option>
                         </select>
                       )}
                     </td>

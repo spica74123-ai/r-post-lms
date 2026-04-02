@@ -12,6 +12,9 @@ const sarabun = Sarabun({
 export const metadata: Metadata = {
   title: "R-POST | Royal Thai Army LMS",
   description: "Enterprise-level Learning Management System for the Royal Thai Army",
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +27,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
       </head>
-      <body className={`${sarabun.variable} font-sans bg-gray-50 dark:bg-army-900 text-gray-900 dark:text-white min-h-screen antialiased transition-colors`}>
+      <body className={`${sarabun.variable} font-sans bg-gray-50 dark:bg-army-900 text-gray-900 dark:text-gray-100 min-h-screen antialiased transition-colors duration-300`}>
         <Providers>{children}</Providers>
       </body>
     </html>

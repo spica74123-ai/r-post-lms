@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative w-full">
         {/* Topbar */}
-        <header className="h-16 bg-white dark:bg-army-800 border-b border-gray-200 dark:border-army-700 shadow-sm flex items-center justify-between px-6 z-10 flex-shrink-0">
+        <header className="h-20 bg-white/60 dark:bg-army-900/60 backdrop-blur-2xl border-b border-gray-200/50 dark:border-army-700/50 flex items-center justify-between px-8 shadow-sm transition-colors duration-300 sticky top-0 z-30">
           <div className="flex items-center">
             <button onClick={() => setIsSidebarOpen(true)} className="md:hidden text-gray-500 hover:text-rta-DEFAULT mr-4">
               <i className="fa-solid fa-bars text-xl"></i>
@@ -31,8 +31,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </header>
 
         {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-8 relative flex flex-col">
-          {children}
+        <div className="flex-1 overflow-y-auto p-4 md:p-8 relative flex flex-col custom-scrollbar">
+          <div className="animate-fade-in-up flex-1 w-full relative">
+            {children}
+          </div>
+          
+          <footer className="mt-12 text-center text-[10px] font-bold text-gray-400 dark:text-gray-500 border-t border-gray-200/50 dark:border-army-700/50 pt-4 pb-2 animate-fade-in uppercase tracking-widest">
+             © 2026 R-POST Enterprise LMS. Proudly Built & Developed by <span className="text-rta-DEFAULT dark:text-rta-accent">SPK-RTA</span>. All rights reserved.
+          </footer>
         </div>
       </main>
     </div>
