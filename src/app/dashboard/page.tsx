@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   // ดึงข้อมูลจาก PostgreSQL ผ่าน Prisma ทันทีตอน Render (SSR)
   const courses = await prisma.course.findMany({

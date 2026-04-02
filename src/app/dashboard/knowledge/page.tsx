@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
+
 // Server Component ดึงข้อมูลจากฐานข้อมูลตรงๆ
 export default async function KnowledgeBasePage() {
   // ดึงเอกสารทั้งหมดเรียงตามวันที่ล่าสุด
